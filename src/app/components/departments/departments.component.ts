@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DepartmentsService } from '../../services/departments.service';
 import { Department } from 'src/app/interfaces/department';
+import { Router } from '@angular/router';
 
 
 
@@ -11,14 +12,21 @@ import { Department } from 'src/app/interfaces/department';
 })
 export class DepartmentsComponent implements OnInit {
   departments: Department[] = [];
+  department: any;
 
   constructor(
       private departmentsService: DepartmentsService,
+      private router: Router
   ) { }
 
   ngOnInit(): void {
     this.departments = this.departmentsService.departments;
     
   }
+
+  goToDepartment(departmentId: string): void {
+    this.router.navigate(['./timesheet', {id: departmentId}]);
+  }
+
 
 }
