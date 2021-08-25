@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DepartmentsService } from '../../services/departments.service';
 import { Department } from 'src/app/interfaces/department';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 
 
@@ -11,8 +12,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./departments.component.scss']
 })
 export class DepartmentsComponent implements OnInit {
-  departments: Department[]
-  department: any;
+  departments: Department[];
+  $departments: Observable<Department[]>;
 
   constructor(
       private departmentsService: DepartmentsService,
@@ -20,9 +21,9 @@ export class DepartmentsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.departmentsService.getDepartments().subscribe(departments => {
-      this.departments = departments;
-    });
+    // this.departmentsService.getDepartments().subscribe(departments => {
+    //   this.departments = departments;
+    this.$departments = this.departmentsService.getDepartments();
     
   }
 
