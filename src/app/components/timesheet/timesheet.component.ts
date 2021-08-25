@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DepartmentsService } from 'src/app/services/departments.service';
 import { Department } from 'src/app/interfaces/department';
 import { Employee } from 'src/app/interfaces/employee';
 import { FormControl, ValidatorFn, AbstractControl } from '@angular/forms';
+import { EmployeeService } from 'src/app/services/employee.service';
 
 
 @Component({
@@ -21,7 +22,9 @@ export class TimesheetComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private departmentService: DepartmentsService
+    private departmentService: DepartmentsService,
+    private employeeService: EmployeeService,
+    private router: Router
 
   ) { }
     
@@ -36,7 +39,7 @@ export class TimesheetComponent implements OnInit {
         this.employeeId++;
 
         this.employees.push({
-            id: this.employeeId.toString(),
+            // id: this.employeeId.toString(),
             departmentId: this.department.id,
             name: this.employeeNameFC.value,
             payRate: Math.floor(Math.random() * 50) + 50,
@@ -75,6 +78,15 @@ getTotalHours(employee: Employee): number {
 
 deleteEmployee(index: number): void {
   this.employees.splice(index, 1);
+}
+
+submit(): void {
+  this.employees.forEach(employee => {
+    this.employeeService.saveEmployeeHours(employee);
+
+  });
+
+  this.router.navigate(['./departments']);
 }
 
 }
